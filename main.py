@@ -1,18 +1,19 @@
 import sys
 from random import randint
 
-from PyQt5 import uic, QtGui
+from PyQt5 import QtGui
 from PyQt5.QtCore import QPoint
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
+from UI import Ui_MainWindow
 
-class Main(QMainWindow):
+
+class Main(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(Main, self).__init__()
+        self.setupUi(self)
         self.is_draw_circle = False
-
-        uic.loadUi("UI.ui", self)
         self.setStyleSheet("""background: transparent;""")
         self.draw_circle_button.clicked.connect(self.draw_circle)
 
@@ -20,10 +21,10 @@ class Main(QMainWindow):
         if self.is_draw_circle:
             draw = QPainter(self)
             draw.begin(self)
-            draw.setPen(QColor(255, 255, 0))
-
             w, h = self.width(), self.height()
             r = randint(1, 100)
+            color = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
+            draw.setPen(color)
             draw.drawEllipse(QPoint(w // 2, h // 2), r, r)
             draw.end()
             self.is_draw_circle = False
